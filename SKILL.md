@@ -237,7 +237,7 @@ SOP 管质量底线，不管文章形状。形状由话题本身决定。
 
 发布由 wechat-publisher skill 执行。若 Phase 0 确认 wechat-publisher 已安装，直接调用其文章发布流程。
 
-**发布参数**：theme=evolution-cat, color=blue, author=黄皮黄, publish_method=browser。
+**发布参数**：theme=evolution-cat, color=blue, author=你的作者名, publish_method=browser。
 
 传入 md 文件路径给发布脚本，脚本内部处理格式转换。不手动预转 HTML。
 
