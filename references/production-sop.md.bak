@@ -1,0 +1,272 @@
+# 生产指令 (SOP)
+
+> 逐步骤执行。每个 >> 是一个动作。⏸ = 停等人审。
+
+---
+
+## 两层架构
+
+| 层 | 内容 | 可变性 |
+|----|------|--------|
+| **骨架层** (`skeleton/`) | 事实校验、信息密度、门禁、源头追溯、结构自检 | 不可通过 retro 回流修改，只能通过版本级架构决策变更 |
+| **血肉层** (`flesh/`) | 风格信号、硬偏好、回避模式 | 通过 Step 7 可选复盘写入，随作者生长 |
+
+> 骨架管质量底线（开源通用），血肉管"这听起来是不是你"（自生长）。
+
+## AI 与人的边界
+
+| AI 擅长 | 人必须做 |
+|---------|---------|
+| 补充背景、找证据 | 核心观点判断 |
+| 结构建议、风格检查 | 个人经历注入 |
+| 数字核验、链接验证 | 情绪节点 |
+| 类比候选生成 | 最终定稿 |
+
+---
+
+## 输入
+
+飞书表格，状态=`已入选` 的条目：
+- 中文标题 / 链接 / 来源 / 日报概览 / 入选理由
+
+---
+
+## 输出
+
+所有产物落盘到 `D:/HHH/自媒体/进化猫/AI/{YYYYMMDD}_{标题}/`：
+- md 文件 + 封面图 ≥1 + 配图 ≥2
+- 字数 2000-6000
+
+---
+
+## 步骤 1：搜索 + 素材核验
+
+```
+>> 读取 skeleton/source-trace.md
+>> 6 维度并行搜索（source-trace.md §一）
+>> 第 6 维度（跨领域类比）与其他 5 个并行启动，spawn Burke（perspective-james-burke）
+   - 输出：历史、电影、日常、商业类比各 1-2 个
+   - 用途：供 Step 3 术语降维和 Step 2 角度发现
+>> 每个数字从源头核实（skeleton/fact-check.md §三）
+>> 逐条过事实校验铁律（skeleton/fact-check.md §一）
+>> 输出素材包 → _runtime/article-source-pack.md（source-trace.md §二）
+>> 输出数据-来源对照表 + 关键数据交叉验证卡 → 写入同一文件
+```
+
+**🚪 门禁**：_runtime/article-source-pack.md 存在 + ≥3 个独立来源印证核心事实 → Step 2。
+
+---
+
+## 步骤 2：创意会 — 三跑道门禁（两阶段 spawn）
+
+```
+>> 前置：素材包已落盘 _runtime/article-source-pack.md
+>> 读取 skeleton/honesty-gate.md
+>> 根据选题确认节奏原型 → 原型自带门禁列表（honesty-gate.md §三），不适用则不 spawn
+
+>> 阶段 1：spawn Beast（perspective-mrbeast，可由 flesh/hard-preferences.md 切换）
+   输入：素材包 + 选题
+   指令：生成 ≥3 个标题候选，按 Beast 公式评估，输出最优 + 评分理由
+   输出：_runtime/gate-1-title.md（含 PASS/FAIL）
+>> 🚪 gate-1-title.md 不存在或 FAIL → 硬阻断，不得进入阶段 2
+
+>> 阶段 2：并行 spawn（两者都需要标题，互不依赖）
+   - Karpathy（perspective-andrej-karpathy，默认）
+     输入：素材包 + gate-1-title.md
+     指令：审数字可追溯性 + 标题承诺可兑现性 + 不确定处是否标注（壳核一致性并入诚实关）
+     输出：_runtime/gate-2-honesty.md（含 PASS/FAIL）
+
+   - Paul Graham（perspective-paul-graham，仅当节奏原型 gates 列表含 PG 时 spawn）
+     输入：素材包 + gate-1-title.md
+     指令：skeleton/structure-gate.md §一 角度自检 4 条 → 判断有无反常识拐点
+     输出：_runtime/gate-3-angle.md（含 PASS/FAIL）
+
+>> 🚪 节奏原型要求的 gate 文件全部存在且 PASS → 继续
+>> 🚪 任一 FAIL → 硬阻断，回对应步骤修复
+>> 全自动场景禁用调查实验型
+>> 确认叙述策略：全文引用式（honesty-gate.md §四）
+>> 输出 _runtime/creative-brief.md（标题 + 角度 + 节奏原型 + 叙述策略 + 一句话读者收获）
+```
+
+**🚪 门禁**：原型要求的所有 gate 文件存在且 PASS + creative-brief.md 落盘 → Step 3。
+
+> 肉层回流后，检查人物可能切换。执行时先检查 flesh/hard-preferences.md 中是否有 character_choice 类型的偏好，有则用那个视角 spawn 子 agent。
+
+---
+
+## 步骤 3：写文章（spawn Writer）
+
+```
+>> 前置检查：_runtime/creative-brief.md + _runtime/article-source-pack.md 存在 → 不存则硬阻断
+>> 读取 skeleton/density-gate.md
+>> spawn Sugarman 子 agent（默认），加载 perspective-joseph-sugarman
+   输入：creative-brief.md + source-pack.md + density-gate.md + flesh/*
+   指令：
+     - 按 creative-brief 的标题/角度/节奏原型/叙述策略写完全文
+     - 开头硬门禁（density-gate.md §一）
+     - 认知引渡原则（density-gate.md §二）
+     - 术语降维（density-gate.md §四）
+     - 禁止词库避开（density-gate.md §五）
+     - 文末：参考来源 + 这里是进化猫，陪你一起看世界✨
+     - 全自动场景：全文引用式叙述
+   输出：_runtime/draft-v1.md
+>> 硬阻断：draft-v1.md 不存在 → 重 spawn
+>> 主 session 读 draft-v1.md → 逐条过风格硬指标（density-gate.md §三）
+>> 字数检查（2000-6000）+ 引用可追溯检查
+>> 不通过 → 标注具体违规项 → 退回 Sugarman spawn 修改，最多 2 轮
+```
+
+**🚪 门禁**：无不自然段落 + 2000-6000 字 + 引用可追溯 → Step 3.5。
+
+> flesh/hard-preferences.md character_choice 可切换 Writer 人物，执行时检查。
+
+⏸ 停等人审。
+
+---
+
+## 步骤 3.5：编辑初审（spawn Feynman）
+
+```
+>> spawn Feynman（perspective-richard-feynman）
+   输入：draft-v1.md
+   指令：
+     - 机械检查：错别字/病句/标点、单句 >45 字、段落 >200 字、连续 3 段等长无变化
+     - 节奏自检（skeleton/structure-gate.md §二）：4 条逐项 PASS/FAIL
+     - 输出问题列表，不全文重写
+   输出：_runtime/editor-review.md
+>> 主 session 读取 editor-review.md → 修具体问题 → 存 draft-v2.md
+```
+
+**🚪 门禁**：校对/可读性/节奏三维通过 + draft-v2.md 落盘 → Step 4。
+
+---
+
+## 步骤 4：去 AI 味
+
+```
+>> 前置：检查 draft-v2.md 存在 → 不存则硬阻断
+>> 读取 humanizer-zh.md
+>> 扫描 24 种 AI 写作模式，重写问题片段
+>> 活人感检查 7 项逐条打勾（skeleton/structure-gate.md §四）
+>> 全文 grep AI 高频词列表（humanizer-zh.md §7）——命中 = 不通过（纯机械扫描，不 spawn persona）
+>> 存 draft-v3.md
+```
+
+**🚪 门禁**：全文 0 命中 AI 高频词 + 活人感 7 项全过 + draft-v3.md 落盘 → Step 5。
+
+⏸ 停等人审（配图 API 有成本）。
+
+---
+
+## 步骤 5：生成配图（spawn Ogilvy）
+
+```
+>> 前置：检查 draft-v3.md 存在 → 不存则硬阻断
+>> 读取 image-generation.md
+>> spawn Ogilvy（perspective-david-ogilvy），加载 image-generation.md
+   输入：draft-v3.md + image-generation.md
+   指令：
+     - Step 5.0：查参考提示词库（不可跳过）
+     - 文章论点 → 视觉概念 → 提示词
+     - 成图后审：是否服务于文章论点？视觉风格是否一致？
+     - 优先级 1：gpt-image-2 API
+     - 失败 → 降级 2：即梦网页版
+     - 失败 → 降级 3：image-prompts.txt（兜底）
+   输出：_runtime/image-brief.md（含提示词 + 成图审查意见）
+```
+
+**🚪 门禁**：封面 1 + 配图 ≥2；仅 txt 标记"待补"不阻断。
+
+---
+
+## 步骤 6：11 项终审
+
+```
+>> 前置：检查 draft-v3.md + _runtime/image-brief.md 存在 → 不存则硬阻断
+>> 读取 final-review.md
+>> spawn Ben Smith（perspective-ben-smith），加载 final-review.md
+   输入：draft-v3.md + image-brief.md
+   指令：11 项逐条终审，独立验证，不放烂货出门
+   输出：_runtime/final-review-report.md
+>> 不通过 → 回对应步骤修复，最多 2 轮
+```
+
+**🚪 门禁**：除配图待补外 11 项全过 → Step 7。
+
+---
+
+## 步骤 7：复盘 & 生长（可选）
+
+```
+⏸ 暂停，问用户：要复盘生长 skill 吗？
+```
+
+### 跳过
+
+→ 文章落盘，流程结束，不写 retro。
+
+### 复盘
+
+```
+>> agent 通读全文，诊断当篇最弱的 3 个点
+   （角度？节奏？开头？类比？某段太散？）
+>> 提 3 个问题，逐个问用户
+>> 用户挑想答的答，不想答说"过"
+>> 能提取的风格信号写入 flesh/voice-signals.md
+   - 单次最多新增 3 条、修改 2 条
+   - 新信号标记 pending，连续 2 篇触发转 active
+>> 检查是否有信号置信度 ≥3 → 候选晋升硬偏好
+   - 暂停展示，等用户确认后写入 flesh/hard-preferences.md
+>> 用户随时喊停，不硬凑 3 个问题
+```
+
+**复盘约束**：
+- 只能写入 `flesh/`，不能改 `skeleton/`
+- 每 10 次 retro 触发一次元审计：
+  - 血肉层信号中连续 5 篇未触发 >30% → 清理
+  - 硬偏好与近期 5 篇风格不符 → 降级
+  - retro 写入内容无法对应到当篇文章 → 删除
+  - skeleton 是否被 retro 触及 → 是则拒绝并回滚
+
+---
+
+## 全流程禁则
+
+- ❌ 文件写 home 目录或盘符根目录
+- ❌ 数据不核实就进分析
+- ❌ 伪造第一人称体验——全自动场景一律引用式
+- ❌ 跳过 awesome-gpt-image-2 参考库
+- ❌ 门禁不通过强行推进
+- ❌ retro 回流写入 skeleton/（骨架层只能版本级变更）
+
+---
+
+## 迭代方式
+
+| 要改什么 | 改哪里 |
+|---------|-------|
+| 事实校验规则 | skeleton/fact-check.md |
+| 信息密度/字数/开头/术语降维/禁止词 | skeleton/density-gate.md |
+| 门禁逻辑/节奏原型/诚实规则 | skeleton/honesty-gate.md |
+| 搜索维度/素材包/追溯规则 | skeleton/source-trace.md |
+| 角度自检/节奏自检/活人感检查 | skeleton/structure-gate.md |
+| 配图 | image-generation.md |
+| 终审项 | final-review.md |
+| 风格信号/硬偏好/回避模式 | flesh/*.md（仅通过 retro 回流） |
+
+---
+
+## 配套
+
+| Skill | 用途 |
+|-------|------|
+| humanizer-zh | 去 AI 味（已内化） |
+| baoyu-post-to-wechat | Markdown → 微信草稿箱 |
+| perspective-james-burke | Step 1 跨领域类比搜索 |
+| perspective-mrbeast | Step 2 Gate 1 标题（默认，可切换） |
+| perspective-andrej-karpathy | Step 2 Gate 2 诚实（默认，可切换） |
+| perspective-paul-graham | Step 2 Gate 3 角度（仅观点论证型 spawn） |
+| perspective-joseph-sugarman | Step 3 写文章 |
+| perspective-richard-feynman | Step 3.5 编辑初审 |
+| perspective-david-ogilvy | Step 5 配图生成 + 视觉审查 |
+| perspective-ben-smith | Step 6 11 项终审 |
