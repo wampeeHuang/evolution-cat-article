@@ -252,6 +252,8 @@ L4 活人感：
    确认被选标题已写入 draft-v2.md 的第一行（# 标题）。
    如果 draft-v2.md 仍用主题标签而非已选标题 → 硬阻断，不得进入 gate-3。
 
+>> 关键词加粗：运行 `python references/bold-keywords.py {文章md路径} --apply` → 人工扫一遍确认无漏无过
+
 >> 写入 draft-v2.md
 
 >> 🚪 前置：_runtime/fact-verification.md 存在且 ALL PASS
